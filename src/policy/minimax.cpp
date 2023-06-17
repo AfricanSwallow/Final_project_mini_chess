@@ -16,10 +16,9 @@ Move Minimax::get_move(State *state, int depth){
   if(!state->legal_actions.size())
     state->get_legal_actions();
   
-  auto actions = state->legal_actions;
   std::map<int, Move> next_moves;
 
-  for (Move move: actions) {
+  for (Move move: state->legal_actions) {
     State* next_state = state->next_state(move);
     next_moves[(*next_state).minimax(depth, !state->player)] = move;
   }
