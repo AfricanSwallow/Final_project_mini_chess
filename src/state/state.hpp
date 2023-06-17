@@ -5,12 +5,21 @@
 #include <cstdlib>
 #include <vector>
 #include <utility>
+#include <map>
 
 #include "../config.hpp"
 
 
 typedef std::pair<size_t, size_t> Point;
 typedef std::pair<Point, Point> Move;
+std::map<int, int> f_value = {
+  {1, 2},
+  {2, 6},
+  {3, 7},
+  {4, 8},
+  {5, 20},
+  {6, INT_MAX},
+};  // piece_type: piece_value
 class Board{
   public:
     char board[2][BOARD_H][BOARD_W] = {{
