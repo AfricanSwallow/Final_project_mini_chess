@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <cstdint>
+#include <algorithm>
 
 #include "./state.hpp"
 #include "../config.hpp"
@@ -13,20 +14,44 @@
  */
 int State::evaluate(){
   // [TODO] design your own evaluation function
-  auto self_board = this->board.board[this->player];
-  auto oppn_board = this->board.board[1 - this->player];
+  auto white_board = this->board.board[0];
+  auto black_board = this->board.board[1];
   
   int f = 0;
   for(int i=0; i<BOARD_H; i++){
     for(int j=0; j<BOARD_W; j++){
-      if(self_board[i][j])
-        f += f_value[self_board[i][j]];
-
-      if(oppn_board[i][j])
-        f -= f_value[oppn_board[i][j]];
+        f += material_table[(int)white_board[i][j]];
+        f -= material_table[(int)black_board[i][j]];
     }
   }
   return f;
+}
+
+int State::minimax(int depth, bool maximizingPlayer) {
+  if (depth == 0 || game_state == WIN) 
+    return evaluate();
+
+  if(!legal_actions.size())
+    get_legal_actions();
+
+  int heuristic;
+
+  if (maximizingPlayer) {
+    heuristic = -INT_MAX;
+    for (Move move: legal_actions) {
+      State s = *this->next_state(move);
+      heuristic = std::max(heuristic, s.minimax(depth-1, false));
+    }
+    return heuristic;
+  }
+  else {
+    heuristic = INT_MAX;
+    for (Move move: legal_actions) {
+      State s = *this->next_state(move);
+      heuristic = std::min(heuristic, s.minimax(depth-1, true));
+    }
+    return heuristic;
+  }
 }
 
 

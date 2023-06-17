@@ -5,21 +5,13 @@
 #include <cstdlib>
 #include <vector>
 #include <utility>
-#include <map>
 
 #include "../config.hpp"
 
 
 typedef std::pair<size_t, size_t> Point;
 typedef std::pair<Point, Point> Move;
-std::map<int, int> f_value = {
-  {1, 2},
-  {2, 6},
-  {3, 7},
-  {4, 8},
-  {5, 20},
-  {6, INT_MAX},
-};  // piece_type: piece_value
+const int material_table[7] = {0, 2, 6, 7, 8, 20, 100};
 class Board{
   public:
     char board[2][BOARD_H][BOARD_W] = {{
@@ -63,6 +55,7 @@ class State{
     State(Board board, int player): board(board), player(player){};
     
     int evaluate();
+    int minimax(int depth, bool maximizingPlayer);
     State* next_state(Move move);
     void get_legal_actions();
     std::string encode_output();
