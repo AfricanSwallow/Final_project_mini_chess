@@ -56,6 +56,7 @@ class State{
     
     int evaluate();
     int minimax(int depth, bool maximizingPlayer);
+    int alphabeta(int depth, int alpha, int beta, bool maximizingPlayer);
     State* next_state(Move move);
     void get_legal_actions();
     std::string encode_output();

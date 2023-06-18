@@ -54,6 +54,38 @@ int State::minimax(int depth, bool maximizingPlayer) {
   }
 }
 
+int State::alphabeta(int depth, int alpha, int beta, bool maximizingPlayer) {
+  if (depth == 0 || game_state == WIN) 
+    return evaluate();
+
+  if(!legal_actions.size())
+    get_legal_actions();
+
+  int heuristic;
+
+  if (maximizingPlayer) {
+    heuristic = -INT_MAX;
+    for (Move move: legal_actions) {
+      State s = *this->next_state(move);
+      heuristic = std::max(heuristic, s.alphabeta(depth-1, alpha, beta, false));
+      alpha = std::max(alpha, heuristic);
+      if (alpha >= beta) break;
+    }
+    return heuristic;
+  }
+  else {
+    heuristic = INT_MAX;
+    for (Move move: legal_actions) {
+      State s = *this->next_state(move);
+      heuristic = std::min(heuristic, s.alphabeta(depth-1, alpha, beta, true));
+      beta = std::min(beta, heuristic);
+      if (beta <= alpha) break;
+    }
+    return heuristic;
+  }
+}
+
+
 
 /**
  * @brief return next state after the move
