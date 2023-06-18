@@ -11,7 +11,8 @@
 
 typedef std::pair<size_t, size_t> Point;
 typedef std::pair<Point, Point> Move;
-const int material_table[7] = {0, 2, 6, 7, 8, 20, 100};
+const int piece_value[7] = {0, 124, 1276, 781, 825, 2538, 0};
+
 class Board{
   public:
     char board[2][BOARD_H][BOARD_W] = {{

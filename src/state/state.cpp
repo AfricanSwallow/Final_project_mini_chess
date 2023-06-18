@@ -20,8 +20,7 @@ int State::evaluate(){
   int f = 0;
   for(int i=0; i<BOARD_H; i++){
     for(int j=0; j<BOARD_W; j++){
-        f += material_table[(int)white_board[i][j]];
-        f -= material_table[(int)black_board[i][j]];
+        f += piece_value[(int)white_board[i][j]] - piece_value[(int)black_board[i][j]];
     }
   }
   return f;
