@@ -16,27 +16,28 @@ int State::evaluate(){
   // [TODO] design your own evaluation function
   auto white_board = this->board.board[0];
   auto black_board = this->board.board[1];
+  int white_piece_type, black_piece_type;
   
   int f = 0;
   for(int i=0; i<BOARD_H; i++){
     for(int j=0; j<BOARD_W; j++){
-        f += piece_value[(int)white_board[i][j]] - piece_value[(int)black_board[i][j]];
+        white_piece_type = (int)white_board[i][j];
+        black_piece_type = (int)black_board[i][j];
+        f += piece_value[white_piece_type] - piece_value[black_piece_type];
+        f += piece_square_tables[white_piece_type][i][j] - piece_square_tables[black_piece_type][BOARD_H-1-i][BOARD_W-1-j];
     }
   }
   return f;
 }
 
 int State::minimax(int depth, bool maximizingPlayer) {
-  if (depth == 0 || game_state == WIN) 
+  if (depth == 0 || legal_actions.empty()) 
     return evaluate();
-
-  if(!legal_actions.size())
-    get_legal_actions();
 
   int heuristic;
 
   if (maximizingPlayer) {
-    heuristic = -INT_MAX;
+    heuristic = INT_MIN;
     for (Move move: legal_actions) {
       State s = *this->next_state(move);
       heuristic = std::max(heuristic, s.minimax(depth-1, false));
@@ -54,13 +55,7 @@ int State::minimax(int depth, bool maximizingPlayer) {
 }
 
 int State::alphabeta(int depth, int alpha, int beta, bool maximizingPlayer) {
-  if (depth == 0 || game_state == WIN) 
-    return evaluate();
-
-  if(!legal_actions.size())
-    get_legal_actions();
-
-  if (legal_actions.empty())
+  if (depth == 0 || legal_actions.empty()) 
     return evaluate();
 
   int heuristic;
