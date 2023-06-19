@@ -26,7 +26,7 @@ int State::evaluate(){
   return f;
 }
 
-int State::minimax(int depth, bool maximizingPlayer) {
+int State::minimax(int depth) {
   if (depth == 0 || game_state == WIN) 
     return evaluate();
 
@@ -35,11 +35,11 @@ int State::minimax(int depth, bool maximizingPlayer) {
 
   int heuristic;
 
-  if (maximizingPlayer) {
+  if (player == white) {
     heuristic = -INT_MAX;
     for (Move move: legal_actions) {
       State s = *this->next_state(move);
-      heuristic = std::max(heuristic, s.minimax(depth-1, false));
+      heuristic = std::max(heuristic, s.minimax(depth-1));
     }
     return heuristic;
   }
@@ -47,13 +47,13 @@ int State::minimax(int depth, bool maximizingPlayer) {
     heuristic = INT_MAX;
     for (Move move: legal_actions) {
       State s = *this->next_state(move);
-      heuristic = std::min(heuristic, s.minimax(depth-1, true));
+      heuristic = std::min(heuristic, s.minimax(depth-1));
     }
     return heuristic;
   }
 }
 
-int State::alphabeta(int depth, int alpha, int beta, bool maximizingPlayer) {
+int State::alphabeta(int depth, int alpha, int beta) {
   if (depth == 0 || game_state == WIN) 
     return evaluate();
 
@@ -65,11 +65,11 @@ int State::alphabeta(int depth, int alpha, int beta, bool maximizingPlayer) {
 
   int heuristic;
 
-  if (maximizingPlayer) {
+  if (player == white) {
     heuristic = INT_MIN;
     for (Move move: legal_actions) {
       State s = *this->next_state(move);
-      heuristic = std::max(heuristic, s.alphabeta(depth-1, alpha, beta, false));
+      heuristic = std::max(heuristic, s.alphabeta(depth-1, alpha, beta));
       alpha = std::max(alpha, heuristic);
       if (alpha >= beta) break;
     }
@@ -79,7 +79,7 @@ int State::alphabeta(int depth, int alpha, int beta, bool maximizingPlayer) {
     heuristic = INT_MAX;
     for (Move move: legal_actions) {
       State s = *this->next_state(move);
-      heuristic = std::min(heuristic, s.alphabeta(depth-1, alpha, beta, true));
+      heuristic = std::min(heuristic, s.alphabeta(depth-1, alpha, beta));
       beta = std::min(beta, heuristic);
       if (beta <= alpha) break;
     }
