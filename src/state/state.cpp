@@ -26,7 +26,7 @@ int State::evaluate(){
   return f;
 }
 
-int State::minimax(int depth) {
+int State::minimax(int depth, bool maximizingPlayer) {
   if (depth == 0 || game_state == WIN) 
     return evaluate();
 
@@ -35,11 +35,11 @@ int State::minimax(int depth) {
 
   int heuristic;
 
-  if (player == white) {
+  if (maximizingPlayer) {
     heuristic = -INT_MAX;
     for (Move move: legal_actions) {
       State s = *this->next_state(move);
-      heuristic = std::max(heuristic, s.minimax(depth-1));
+      heuristic = std::max(heuristic, s.minimax(depth-1, false));
     }
     return heuristic;
   }
@@ -47,13 +47,13 @@ int State::minimax(int depth) {
     heuristic = INT_MAX;
     for (Move move: legal_actions) {
       State s = *this->next_state(move);
-      heuristic = std::min(heuristic, s.minimax(depth-1));
+      heuristic = std::min(heuristic, s.minimax(depth-1, true));
     }
     return heuristic;
   }
 }
 
-int State::alphabeta(int depth, int alpha, int beta) {
+int State::alphabeta(int depth, int alpha, int beta, bool maximizingPlayer) {
   if (depth == 0 || game_state == WIN) 
     return evaluate();
 
@@ -65,11 +65,11 @@ int State::alphabeta(int depth, int alpha, int beta) {
 
   int heuristic;
 
-  if (player == white) {
+  if (maximizingPlayer) {
     heuristic = INT_MIN;
     for (Move move: legal_actions) {
       State s = *this->next_state(move);
-      heuristic = std::max(heuristic, s.alphabeta(depth-1, alpha, beta));
+      heuristic = std::max(heuristic, s.alphabeta(depth-1, alpha, beta, false));
       alpha = std::max(alpha, heuristic);
       if (alpha >= beta) break;
     }
@@ -79,7 +79,7 @@ int State::alphabeta(int depth, int alpha, int beta) {
     heuristic = INT_MAX;
     for (Move move: legal_actions) {
       State s = *this->next_state(move);
-      heuristic = std::min(heuristic, s.alphabeta(depth-1, alpha, beta));
+      heuristic = std::min(heuristic, s.alphabeta(depth-1, alpha, beta, true));
       beta = std::min(beta, heuristic);
       if (beta <= alpha) break;
     }
