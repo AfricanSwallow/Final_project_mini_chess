@@ -12,13 +12,10 @@
 typedef std::pair<size_t, size_t> Point;
 typedef std::pair<Point, Point> Move;
 // const int piece_value[7] = {0, 124, 1276, 781, 825, 2538, 0};
-const int piece_value[7] = {0, 1, 3, 3, 5, 9, 2000};
-enum {white, black};
-enum {
-  nothing, pawn, rook, knight, bishop, queen, king
-};
+// const int piece_value[7] = {0, 1, 3, 3, 5, 9, 2000};
+const int piece_value[7] = {0, 2, 6, 7, 8, 20, 1000000};
 
-const int piece_square_tables[7][6][5] = {
+const int piece_square_tables[7][BOARD_H][BOARD_W] = {
   {{0, 0, 0, 0, 0},
    {0, 0, 0, 0, 0},
    {0, 0, 0, 0, 0},
@@ -56,8 +53,8 @@ const int piece_square_tables[7][6][5] = {
 
   {{0, 0, 0, 0, 0}, // queen
    {0, 1, 1, 1, 0},
-   {0, 1, 5, 1, 0},
-   {0, 1, 5, 1, 0},
+   {0, 1, 4, 1, 0},
+   {0, 1, 4, 1, 0},
    {0, 1, 1, 1, 0},
    {0, 0, 0, 0, 0}},
 
@@ -65,7 +62,7 @@ const int piece_square_tables[7][6][5] = {
    {0, 0, 0, 0, 0},
    {0, 0, 0, 0, 0},
    {0, 0, 0, 0, 0},
-   {0, 0, 0, 0, 0},
+   {0, 0, 0, -10, 0},
    {0, 0, 0, 0, 0}}
 };
 
