@@ -60,10 +60,13 @@ int State::alphabeta(int depth, int alpha, int beta, bool maximizingPlayer) {
   if(!legal_actions.size())
     get_legal_actions();
 
+  if (legal_actions.empty())
+    return evaluate();
+
   int heuristic;
 
   if (maximizingPlayer) {
-    heuristic = -INT_MAX;
+    heuristic = INT_MIN;
     for (Move move: legal_actions) {
       State s = *this->next_state(move);
       heuristic = std::max(heuristic, s.alphabeta(depth-1, alpha, beta, false));
