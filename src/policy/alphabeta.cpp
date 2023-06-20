@@ -20,7 +20,11 @@ Move Alphabeta::get_move(State *state, int depth){
 
   for (Move move: state->legal_actions) {
     State* next_state = state->next_state(move);
-    next_moves[(*next_state).alphabeta(depth, INT_MIN, INT_MAX, 1-state->player)] = move;
+    if (state->player == 0) {
+      next_moves[(*next_state).alphabeta(depth, INT_MIN, INT_MAX, false)] = move;
+    } else {
+      next_moves[(*next_state).alphabeta(depth, INT_MIN, INT_MAX, true)] = move;
+    }
   }
 
   if (state->player == 0) 
