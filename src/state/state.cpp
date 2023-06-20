@@ -24,7 +24,7 @@ int State::evaluate(){
         white_piece_type = (int)white_board[i][j];
         black_piece_type = (int)black_board[i][j];
         f += (piece_value[white_piece_type] - piece_value[black_piece_type]);
-        // f += (piece_square_tables[white_piece_type][i][j] - piece_square_tables[black_piece_type][BOARD_H-1-i][BOARD_W-1-j]);
+        f += (piece_square_tables[white_piece_type][i][j] - piece_square_tables[black_piece_type][BOARD_H-1-i][BOARD_W-1-j]);
     }
   }
   return f;
